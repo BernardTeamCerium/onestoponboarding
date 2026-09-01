@@ -16,7 +16,7 @@ export const site = {
   /** Optional GoHighLevel / Calendly booking link shown on the thank-you screen. */
   bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL ?? "",
   /** Roughly how long the questionnaire takes, shown up front. */
-  estimatedMinutes: 2,
+  estimatedMinutes: 3,
 } as const;
 
 export interface NextStep {
@@ -26,8 +26,8 @@ export interface NextStep {
 }
 
 /**
- * The "what happens after you hit submit" promise. Shown before the form so
- * advisors know what they're signing up for, and again on the thank-you screen.
+ * The "what happens after you hit submit" promise. Shown in the header so the
+ * advisor knows what they're in for, and again in full on the thank-you screen.
  */
 export const NEXT_STEPS: NextStep[] = [
   {
@@ -38,27 +38,20 @@ export const NEXT_STEPS: NextStep[] = [
   },
   {
     when: "1 business day",
-    title: "We reach out to book your discovery call",
+    title: "Your account manager reaches out",
     description:
-      "A 20-minute call with a strategist who works with advisors — we go through your goals, your niche and any compliance requirements.",
+      "We'll book your kickoff call and send a short list of what we need from you — brand assets, logins and any compliance contacts.",
   },
   {
     when: "3–5 business days",
-    title: "Your custom marketing blueprint",
+    title: "Your onboarding plan",
     description:
-      "A written plan covering brand, print, digital and follow-up — with scope, timeline and pricing laid out. No obligation.",
+      "A written plan covering what we're building, in what order, with dates — including anything that needs your broker-dealer or RIA review.",
   },
   {
     when: "On your approval",
-    title: "Kickoff and production",
+    title: "Production starts",
     description:
       "Design, revisions and your compliance review, then everything goes to print and launch. One team, one point of contact.",
   },
-];
-
-/** Short trust points used in the hero. */
-export const HERO_POINTS: string[] = [
-  "Built specifically for financial advisors",
-  "Compliance-ready files for your BD or RIA review",
-  "Branding, print, web and CRM under one roof",
 ];

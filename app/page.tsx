@@ -1,5 +1,5 @@
 import OnboardingForm from "@/components/OnboardingForm";
-import { site, NEXT_STEPS, HERO_POINTS } from "@/lib/site";
+import { site, NEXT_STEPS } from "@/lib/site";
 
 export default function Home() {
   return (
@@ -23,95 +23,40 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="hero">
-          <div className="wrap hero-grid">
-            <div>
-              <span className="eyebrow">
-                <span className="eyebrow-dot" aria-hidden="true" />
-                Advisor Onboarding
-              </span>
-              <h1>
-                Let&apos;s build the marketing engine your <em>practice</em> deserves.
-              </h1>
-              <p className="hero-lede">
-                You&apos;re {site.estimatedMinutes} minutes away from a custom marketing blueprint.
-                Tell us about your practice, the services you&apos;re interested in and what you want
-                to grow — we&apos;ll handle the rest, from brand and print to your website, CRM and
-                follow-up.
-              </p>
-              <ul className="hero-points">
-                {HERO_POINTS.map((point) => (
-                  <li key={point}>
-                    <span className="check" aria-hidden="true">
-                      ✓
-                    </span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="hero-cta">
-                <a className="btn btn-primary" href="#questionnaire">
-                  Start the questionnaire
-                </a>
-                <span className="hero-meta">
-                  About {site.estimatedMinutes} minutes · No obligation
-                </span>
-              </div>
-            </div>
+        <section className="intro">
+          <div className="wrap intro-inner">
+            <span className="eyebrow">
+              <span className="eyebrow-dot" aria-hidden="true" />
+              Client Onboarding
+            </span>
+            <h1>
+              Welcome aboard. Let&apos;s get your <em>marketing</em> moving.
+            </h1>
+            <p className="intro-lede">
+              A few quick questions about you, your practice and the services you&apos;d like us to
+              take on — so your account team has everything it needs to start building.
+            </p>
+            <p className="intro-meta">
+              About {site.estimatedMinutes} minutes · 4 short steps · Here&apos;s what happens after
+              you submit:
+            </p>
 
-            <aside className="hero-card">
-              <h2>What happens after you submit</h2>
-              <p className="hero-card-sub">No mystery, no waiting around wondering.</p>
-              <ol className="mini-steps">
-                {NEXT_STEPS.map((step, index) => (
-                  <li className="mini-step" key={step.title}>
-                    <span className="mini-num" aria-hidden="true">
-                      {index + 1}
-                    </span>
-                    <span>
-                      <span className="mini-when">{step.when}</span>
-                      <span className="mini-title">{step.title}</span>
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </aside>
-          </div>
-        </section>
-
-        <section className="section section-white" id="next-steps">
-          <div className="wrap">
-            <div className="section-head">
-              <span className="kicker">Your roadmap</span>
-              <h2>Here&apos;s exactly what to expect</h2>
-              <p>
-                Every advisor we onboard follows the same clear path — so you always know where
-                things stand and what&apos;s coming next.
-              </p>
-            </div>
-            <div className="steps-grid">
+            <ol className="strip">
               {NEXT_STEPS.map((step, index) => (
-                <article className="step-card" key={step.title}>
-                  <div className="step-num">Step {index + 1}</div>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                  <span className="step-when">{step.when}</span>
-                </article>
+                <li className="strip-item" key={step.title}>
+                  <span className="strip-num" aria-hidden="true">
+                    {index + 1}
+                  </span>
+                  <span className="strip-when">{step.when}</span>
+                  <span className="strip-title">{step.title}</span>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
         <section className="form-section" id="questionnaire">
           <div className="wrap">
-            <div className="section-head">
-              <span className="kicker">Step 1 of your roadmap</span>
-              <h2>Tell us about your practice</h2>
-              <p>
-                Four short sections: who you are, what you do, what you need and where you want to
-                go. Nothing here is a commitment.
-              </p>
-            </div>
             <OnboardingForm />
           </div>
         </section>
@@ -140,7 +85,7 @@ export default function Home() {
             </address>
           </div>
           <p className="footer-legal">
-            © {new Date().getFullYear()} {site.company}. By submitting the questionnaire you agree
+            © {new Date().getFullYear()} {site.company}. By submitting this questionnaire you agree
             to be contacted about your onboarding by email, phone and text. Reply STOP to any text
             to opt out.
           </p>

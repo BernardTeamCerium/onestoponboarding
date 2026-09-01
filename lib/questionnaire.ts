@@ -44,7 +44,7 @@ export const STEPS: Step[] = [
   {
     id: "personal",
     title: "About you",
-    blurb: "The basics, so we know who we're building for and how to reach you.",
+    blurb: "The basics, so your account team knows who to reach and how.",
     fields: [
       { name: "firstName", label: "First name", type: "text", required: true, half: true, maxLength: 60, placeholder: "Jordan" },
       { name: "lastName", label: "Last name", type: "text", required: true, half: true, maxLength: 60, placeholder: "Rivera" },
@@ -57,7 +57,7 @@ export const STEPS: Step[] = [
   {
     id: "professional",
     title: "Your practice",
-    blurb: "Your professional background shapes the messaging, the collateral and the compliance path.",
+    blurb: "Your background shapes the messaging, the collateral and the compliance path.",
     fields: [
       { name: "firmName", label: "Firm or practice name", type: "text", required: true, maxLength: 120, placeholder: "Rivera Wealth Partners" },
       {
@@ -120,33 +120,25 @@ export const STEPS: Step[] = [
   },
   {
     id: "services",
-    title: "What you're interested in",
-    blurb: "Everything below is done in-house — pick what you'd like us to quote.",
+    title: "Services",
+    blurb: "Tell us which services you'd like your team to take on.",
     fields: [
       {
         name: "services",
-        label: "Services you'd like to explore",
+        label: "Services you're interested in",
         type: "multiselect",
         required: true,
         options: [
-          "Branding & logo design",
-          "Business cards & print collateral",
-          "Client welcome kits & folders",
-          "Professional headshots",
-          "Website design & development",
-          "LinkedIn & Facebook branded profiles",
-          "Social media management",
-          "Direct mail campaigns",
-          "Email & SMS marketing automation",
-          "CRM setup & automation",
-          "Online reviews & testimonials system",
-          "Seminar & event marketing",
-          "Custom guides & whitepapers",
-          "Signage, banners & displays",
-          "Promotional products & apparel",
-          "Paid ads & lead generation",
+          "Google My Business Profile Setup & Management",
+          "Search Engine Optimization",
+          "Google Knowledge Panel",
+          "Newsletter Marketing Services",
+          "Review Management System",
+          "Printing Services",
+          "Lead Generation",
+          "Appointment Booking",
         ],
-        hint: "Select at least one. Not sure? Pick what sounds closest — we'll refine it on the call.",
+        hint: "Select at least one. Not sure? Pick what sounds closest — we'll sort out the details on your kickoff call.",
       },
       {
         name: "currentMarketing",
@@ -161,23 +153,12 @@ export const STEPS: Step[] = [
           "My broker-dealer provides materials",
         ],
       },
-      {
-        name: "packageInterest",
-        label: "Interested in one of our advisor packages?",
-        type: "radio",
-        options: [
-          "Essential Advisor Package",
-          "Professional Growth Package",
-          "Not sure — walk me through the options",
-          "I'd rather build something custom",
-        ],
-      },
     ],
   },
   {
     id: "goals",
     title: "Your goals",
-    blurb: "Last step. This is what we'll build your marketing blueprint around.",
+    blurb: "Last step. This is what we'll build your onboarding plan around.",
     fields: [
       {
         name: "primaryGoal",

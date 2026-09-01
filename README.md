@@ -1,9 +1,12 @@
-# Advisor Onboarding — One Stop Print & Digital Solutions
+# Client Onboarding — One Stop Print & Digital Solutions
 
-A landing page and onboarding questionnaire for financial advisors. It captures
-personal and professional background, the services they're interested in and
-their goals, tells them exactly what happens next, and hands the whole
-submission to GoHighLevel so email and SMS follow-up fire automatically.
+An onboarding questionnaire for advisors who are already clients. It captures
+personal and professional background, the services they'd like added and their
+goals, tells them exactly what happens next, and hands the whole submission to
+GoHighLevel so email and SMS follow-up fire automatically.
+
+The page is the form: a compact header, the questionnaire, and a footer. There
+is no sales pitch — these advisors have already signed.
 
 Built with Next.js (App Router) and TypeScript. No database — GoHighLevel is
 the system of record.
@@ -32,19 +35,23 @@ configuration is needed.
 
 ## What the advisor sees
 
-1. **Hero** — the promise, the time cost (about 2 minutes), and a side card
-   listing what happens after they submit, so nothing is a surprise.
-2. **Your roadmap** — the four next steps in detail.
-3. **The questionnaire** — four short steps with a progress bar:
+1. **Header** — a welcome line, the time cost (about 3 minutes), and a slim
+   strip of the four next steps so nothing after submitting is a surprise.
+2. **The questionnaire** — four short steps with a progress bar, starting in
+   the first screenful:
    - *About you* — name, email, mobile, city/state, website.
    - *Your practice* — firm, role, years in the industry, team size,
      broker-dealer/RIA affiliation, ideal client.
-   - *What you're interested in* — services, how marketing is handled today,
-     package interest.
+   - *Services* — which services to take on, and how marketing is handled today.
    - *Your goals* — primary goal, target new clients, timeline, budget,
      preferred contact method, biggest obstacle, and email/SMS consent.
-4. **Thank-you screen** — repeats the four next steps with timing, plus a
+3. **Thank-you screen** — the four next steps in full with timing, plus a
    booking button when `NEXT_PUBLIC_BOOKING_URL` is set.
+
+The services offered on step three are Google My Business Profile Setup &
+Management, Search Engine Optimization, Google Knowledge Panel, Newsletter
+Marketing Services, Review Management System, Printing Services, Lead
+Generation and Appointment Booking. Edit the list in `lib/questionnaire.ts`.
 
 Answers are validated in the browser *and* again on the server, so a step can't
 be skipped and the API can't be posted to with junk.
@@ -83,9 +90,9 @@ and SMS templates. Useful variables:
 
 `firstName`, `lastName`, `full_name`, `email`, `phone`, `firmName`, `role`,
 `yearsExperience`, `teamSize`, `affiliation`, `ideal_client_list`,
-`services_list`, `currentMarketing`, `packageInterest`, `primaryGoal`,
-`clientGoal`, `timeline`, `budget`, `preferredContact`, `challenge`,
-`contactId`, `submittedAt`, `utmSource`, `utmCampaign`.
+`services_list`, `currentMarketing`, `primaryGoal`, `clientGoal`, `timeline`,
+`budget`, `preferredContact`, `challenge`, `contactId`, `submittedAt`,
+`utmSource`, `utmCampaign`.
 
 ### 4. Build the messaging workflows
 
@@ -99,9 +106,8 @@ of parsing anything:
 | `role-*` | e.g. `role-ria-owner-principal` |
 | `timeline-*` | e.g. `timeline-right-away` — good for prioritising outreach |
 | `goal-*` | e.g. `goal-bring-in-more-qualified-leads` |
-| `package-*` | e.g. `package-professional-growth-package` |
 | `prefers-*` | e.g. `prefers-text-message` — branch email vs. SMS on this |
-| `service-*` | One per selected service, e.g. `service-website-design-and-development` |
+| `service-*` | One per selected service, e.g. `service-search-engine-optimization` |
 
 A good starting set of workflows:
 
@@ -109,10 +115,10 @@ A good starting set of workflows:
    confirmation email and text promised on the thank-you screen.
 2. **Internal alert** — same trigger; notify the advisor team with the note
    attached to the contact.
-3. **Booking nudge** — wait 1 day, then if no appointment is booked, send a
+3. **Kickoff nudge** — wait 1 day, then if no kickoff call is booked, send a
    reminder with the calendar link.
-4. **Hot-lead routing** — trigger on `timeline-right-away` and assign the
-   contact to a strategist immediately.
+4. **Priority routing** — trigger on `timeline-right-away` and assign the
+   contact to an account manager immediately.
 
 Branch on `prefers-text-message` / `prefers-email` / `prefers-phone-call` to
 respect the contact method the advisor chose.
@@ -137,7 +143,7 @@ Any questionnaire field name works as a key — see `lib/questionnaire.ts`.
 | Company details, phone, address, booking link | `lib/site.ts` |
 | The "what happens next" steps | `NEXT_STEPS` in `lib/site.ts` |
 | Questions, options, required fields | `lib/questionnaire.ts` |
-| Headline and section copy | `app/page.tsx` |
+| Welcome headline and intro copy | `app/page.tsx` |
 
 `lib/questionnaire.ts` is the single source of truth: adding a question there
 adds it to the form, the validation, the note and the webhook payload
@@ -165,7 +171,7 @@ automatically. Give new fields a `name` you're happy to see in GoHighLevel.
 ```
 app/
   layout.tsx              fonts, metadata
-  page.tsx                hero, roadmap, footer
+  page.tsx                header, intro, next-steps strip, footer
   globals.css             brand tokens and all styling
   api/onboarding/route.ts validation, honeypot, rate limit, delivery
 components/

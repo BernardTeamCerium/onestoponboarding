@@ -70,9 +70,6 @@ export function buildTags(answers: Answers): string[] {
   const goal = asText(answers.primaryGoal);
   if (goal) tags.add(`goal-${slugify(goal)}`);
 
-  const pkg = asText(answers.packageInterest);
-  if (pkg) tags.add(`package-${slugify(pkg)}`);
-
   const contact = asText(answers.preferredContact);
   if (contact) tags.add(`prefers-${slugify(contact)}`);
 

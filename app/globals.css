@@ -149,16 +149,6 @@ img {
   border-color: var(--navy);
 }
 
-.btn-light {
-  background: var(--white);
-  color: var(--navy);
-}
-
-.btn-light:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
-}
-
 /* ==========================================================================
    Header
    ========================================================================== */
@@ -237,22 +227,21 @@ img {
 }
 
 /* ==========================================================================
-   Hero
+   Intro — compact header above the form, not a sales hero
    ========================================================================== */
-.hero {
+.intro {
   background:
-    radial-gradient(900px 460px at 88% -8%, rgba(240, 78, 35, 0.22), transparent 62%),
-    radial-gradient(700px 420px at 4% 108%, rgba(242, 177, 52, 0.14), transparent 60%),
+    radial-gradient(900px 420px at 86% -25%, rgba(240, 78, 35, 0.22), transparent 62%),
+    radial-gradient(700px 380px at 6% 125%, rgba(242, 177, 52, 0.12), transparent 60%),
     var(--navy-deep);
-  color: rgba(255, 255, 255, 0.82);
-  padding: 76px 0 96px;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 58px 0 46px;
+  text-align: center;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 56px;
-  align-items: start;
+.intro-inner {
+  max-width: 820px;
+  margin: 0 auto;
 }
 
 .eyebrow {
@@ -268,7 +257,7 @@ img {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .eyebrow-dot {
@@ -278,98 +267,81 @@ img {
   background: var(--gold);
 }
 
-.hero h1 {
+.intro h1 {
   color: var(--white);
-  font-size: clamp(2.25rem, 5vw, 3.4rem);
-  margin-bottom: 20px;
+  font-size: clamp(1.9rem, 4.2vw, 2.7rem);
+  margin-bottom: 16px;
 }
 
-.hero h1 em {
+.intro h1 em {
   font-style: normal;
   color: var(--gold);
 }
 
-.hero-lede {
-  font-size: 19px;
-  max-width: 34em;
-  margin-bottom: 30px;
+.intro-lede {
+  font-size: 18px;
+  max-width: 40em;
+  margin: 0 auto 14px;
 }
 
-.hero-points {
+.intro-meta {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.58);
+  margin: 0;
+}
+
+/* The next-steps promise, kept to a slim strip so the form stays the focus. */
+.strip {
   list-style: none;
-  margin: 0 0 34px;
-  padding: 0;
   display: grid;
-  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 28px 0 0;
+  padding: 0;
+  text-align: left;
 }
 
-.hero-points li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: 16px;
+.strip-item {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius);
+  padding: 16px 16px 18px;
 }
 
-.check {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  margin-top: 2px;
-  border-radius: 50%;
-  background: rgba(242, 177, 52, 0.18);
-  color: var(--gold);
+.strip-num {
   display: grid;
   place-items: center;
-  font-size: 12px;
+  width: 26px;
+  height: 26px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 13px;
   font-weight: 800;
 }
 
-.hero-cta {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.hero-meta {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* Hero side card: the next-steps promise, visible before they start. */
-.hero-card {
-  background: var(--white);
-  border-radius: var(--radius-lg);
-  padding: 30px 28px;
-  box-shadow: var(--shadow-lg);
-}
-
-.hero-card h2 {
-  font-size: 1.15rem;
+.strip-when {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
   margin-bottom: 4px;
 }
 
-.hero-card-sub {
+.strip-title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 14px;
-  color: var(--muted);
-  margin-bottom: 22px;
+  line-height: 1.35;
+  color: var(--white);
 }
 
-.mini-steps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 18px;
-}
-
-.mini-step {
-  display: grid;
-  grid-template-columns: 30px 1fr;
-  gap: 14px;
-  align-items: start;
-}
-
+/* Numbered badge and timing label, reused by the thank-you screen. */
 .mini-num {
   width: 30px;
   height: 30px;
@@ -392,127 +364,12 @@ img {
   color: var(--accent);
 }
 
-.mini-title {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--ink);
-  font-size: 15px;
-  line-height: 1.35;
-}
-
-/* ==========================================================================
-   Sections
-   ========================================================================== */
-.section {
-  padding: 86px 0;
-}
-
-.section-cream {
-  background: var(--cream);
-}
-
-.section-white {
-  background: var(--white);
-}
-
-.section-head {
-  max-width: 640px;
-  margin: 0 auto 52px;
-  text-align: center;
-}
-
-.section-head h2 {
-  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
-}
-
-.section-head p {
-  font-size: 18px;
-  margin: 0;
-}
-
-.kicker {
-  display: block;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-
-/* Next-steps cards */
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
-}
-
-.step-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 30px 24px 26px;
-  box-shadow: var(--shadow-sm);
-}
-
-.section-white .step-card {
-  background: var(--cream);
-}
-
-.step-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 4px;
-  border-radius: var(--radius) var(--radius) 0 0;
-  background: linear-gradient(90deg, var(--accent), var(--gold));
-}
-
-.step-num {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-.step-card h3 {
-  font-size: 1.05rem;
-  margin-bottom: 8px;
-}
-
-.step-card p {
-  font-size: 15px;
-  margin: 0;
-}
-
-.step-when {
-  align-self: flex-start;
-  margin-top: 16px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--navy);
-  background: rgba(18, 41, 74, 0.07);
-  border-radius: 999px;
-  padding: 5px 12px;
-}
-
-.step-card p {
-  margin-bottom: auto;
-}
-
 /* ==========================================================================
    Form
    ========================================================================== */
 .form-section {
   background: linear-gradient(180deg, var(--cream) 0%, #f2ede7 100%);
-  padding: 86px 0 96px;
+  padding: 54px 0 88px;
 }
 
 .form-shell {
@@ -914,12 +771,7 @@ fieldset.field .error {
    Responsive
    ========================================================================== */
 @media (max-width: 980px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .steps-grid {
+  .strip {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -929,16 +781,15 @@ fieldset.field .error {
     font-size: 16px;
   }
 
-  .hero {
-    padding: 52px 0 64px;
+  .intro {
+    padding: 44px 0 36px;
   }
 
-  .section,
   .form-section {
-    padding: 60px 0;
+    padding: 40px 0 60px;
   }
 
-  .steps-grid,
+  .strip,
   .fields,
   .option-grid-2 {
     grid-template-columns: 1fr;

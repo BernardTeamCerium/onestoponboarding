@@ -210,8 +210,8 @@ export default function OnboardingForm() {
           </div>
           <h2>{firstName ? `Thanks, ${firstName} — you're all set.` : "Thanks — you're all set."}</h2>
           <p>
-            Your answers are in and your file is already with our advisor team. Here&apos;s exactly
-            what happens next.
+            Your answers are in and your file is already with your account team. Here&apos;s
+            exactly what happens next.
           </p>
 
           <ol className="thanks-list">
@@ -336,7 +336,7 @@ export default function OnboardingForm() {
         </div>
 
         <p className="form-note">
-          Your information goes straight to our advisor team. We never sell or share it.
+          Your answers go straight to your account team. We never sell or share them.
         </p>
       </form>
     </div>

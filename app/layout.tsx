@@ -3,14 +3,14 @@ import { site } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: `Advisor Onboarding | ${site.company}`,
+  title: `Client Onboarding | ${site.company}`,
   description:
-    "Financial advisors: answer a few quick questions and get a custom marketing blueprint covering branding, print, web and follow-up — from One Stop Print & Digital Solutions.",
+    "Onboarding questionnaire for One Stop Print & Digital Solutions clients — tell us about your practice, the services you need and your goals so we can get started.",
   robots: { index: false, follow: false },
   openGraph: {
-    title: `Advisor Onboarding | ${site.company}`,
+    title: `Client Onboarding | ${site.company}`,
     description:
-      "Tell us about your practice and your goals. We'll build your custom marketing blueprint in 3–5 business days.",
+      "Tell us about your practice, the services you need and your goals so we can get your onboarding started.",
     type: "website",
   },
 };
