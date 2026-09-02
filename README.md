@@ -7,10 +7,12 @@ do, and which assets they already have. It then covers the services that
 surround the site, tells them exactly what happens next, and hands the whole
 submission to GoHighLevel so email and SMS follow-up fire automatically.
 
-The page is the form, styled to match onestopprintco.com: the black utility
-bar, the OneStop wordmark on white, a light hero with a faint grid and warm
-wash, headlines ending in an orange word, and pill buttons with the orange
-gradient. There is no sales pitch — these advisors have already signed.
+The page follows onestopprintco.com's composition: the two-segment black
+utility bar, the OneStop wordmark on white with an orange CTA pill, and a
+left-aligned hero whose headline ends in an orange word, set beside a dark
+technical panel — the brand's stat-panel treatment, here listing the
+onboarding sequence. The questionnaire sits below on light surfaces. There is
+no sales pitch — these advisors have already signed.
 
 Built with Next.js (App Router) and TypeScript. No database — GoHighLevel is
 the system of record.
@@ -39,8 +41,8 @@ configuration is needed.
 
 ## What the advisor sees
 
-1. **Header** — "Let's get you online", the time cost, and a slim strip of the
-   four next steps so nothing after submitting is a surprise.
+1. **Hero** — "Let's Get You Online." beside a dark panel listing the four
+   next steps with timings, so nothing after submitting is a surprise.
 2. **The questionnaire** — five short steps with a progress bar:
    - *About you* — name, email, mobile, city/state, designations as they should
      appear on the site.

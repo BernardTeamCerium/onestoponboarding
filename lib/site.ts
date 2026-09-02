@@ -8,8 +8,8 @@ export const site = {
   company: "One Stop Print & Digital Marketing Solutions",
   shortName: "OneStop",
 
-  /** The two-line lockup under the wordmark. */
-  logoSub: "Print & Digital Marketing Solutions",
+  /** The two-line lockup under the wordmark, as it appears in the logo. */
+  logoSubLines: ["Print & Digital", "Marketing Solutions"] as const,
   tagline: "The advisor growth platform — built exclusively for financial professionals.",
   phone: "(305) 495-9490",
   phoneHref: "tel:+13054959490",
