@@ -3,6 +3,9 @@
  *
  * The form UI, the validation schema and the GoHighLevel payload are all
  * derived from this file, so adding or renaming a question only happens here.
+ *
+ * The package starts with the advisor's website — step three is the centre of
+ * gravity, and everything else hangs off it.
  */
 
 export type FieldType =
@@ -40,24 +43,44 @@ export interface Step {
   fields: Field[];
 }
 
+/** The services that surround the website, offered on step four. */
+export const PACKAGE_SERVICES = [
+  "Google My Business Profile Setup & Management",
+  "Search Engine Optimization",
+  "Google Knowledge Panel",
+  "Newsletter Marketing Services",
+  "Review Management System",
+  "Printing Services",
+  "Lead Generation",
+  "Appointment Booking",
+];
+
 export const STEPS: Step[] = [
   {
     id: "personal",
     title: "About you",
-    blurb: "The basics, so your account team knows who to reach and how.",
+    blurb: "How your name appears online, and how we reach you while we build.",
     fields: [
       { name: "firstName", label: "First name", type: "text", required: true, half: true, maxLength: 60, placeholder: "Jordan" },
       { name: "lastName", label: "Last name", type: "text", required: true, half: true, maxLength: 60, placeholder: "Rivera" },
       { name: "email", label: "Work email", type: "email", required: true, half: true, maxLength: 160, placeholder: "you@yourfirm.com" },
       { name: "phone", label: "Mobile phone", type: "tel", required: true, half: true, maxLength: 32, placeholder: "(305) 555-0142" },
-      { name: "cityState", label: "City & state", type: "text", half: true, maxLength: 80, placeholder: "Miami, FL" },
-      { name: "website", label: "Website", type: "url", half: true, maxLength: 200, placeholder: "yourfirm.com", hint: "Optional — leave blank if you don't have one yet." },
+      { name: "cityState", label: "City & state", type: "text", half: true, maxLength: 80, placeholder: "Miami, FL", hint: "Used for your local search listing." },
+      {
+        name: "designations",
+        label: "Designations",
+        type: "text",
+        half: true,
+        maxLength: 120,
+        placeholder: "CFP®, ChFC®",
+        hint: "Exactly as you want them shown on your site.",
+      },
     ],
   },
   {
     id: "professional",
     title: "Your practice",
-    blurb: "Your background shapes the messaging, the collateral and the compliance path.",
+    blurb: "Your background becomes the copy on your site — and sets the compliance path.",
     fields: [
       { name: "firmName", label: "Firm or practice name", type: "text", required: true, maxLength: 120, placeholder: "Rivera Wealth Partners" },
       {
@@ -90,6 +113,7 @@ export const STEPS: Step[] = [
         type: "select",
         half: true,
         options: ["Just me", "2–5 people", "6–15 people", "16+ people"],
+        hint: "Tells us how many bios to build.",
       },
       {
         name: "affiliation",
@@ -98,7 +122,6 @@ export const STEPS: Step[] = [
         half: true,
         maxLength: 120,
         placeholder: "e.g. LPL, Independent RIA",
-        hint: "Helps us plan for your compliance review.",
       },
       {
         name: "idealClient",
@@ -114,104 +137,158 @@ export const STEPS: Step[] = [
           "Young professionals",
           "Still defining my niche",
         ],
-        hint: "Pick as many as apply.",
+        hint: "Pick as many as apply — this shapes who your site speaks to.",
+      },
+    ],
+  },
+  {
+    id: "website",
+    title: "Your website",
+    blurb: "Your package starts here. Everything else connects to it.",
+    fields: [
+      {
+        name: "currentSite",
+        label: "Where are you today?",
+        type: "radio",
+        required: true,
+        options: [
+          "I'm not online yet",
+          "I have a site, but it needs replacing",
+          "I have a site that just needs updating",
+          "I only have a page on my firm's website",
+          "Not sure what I have",
+        ],
+      },
+      {
+        name: "currentSiteUrl",
+        label: "Current site address",
+        type: "text",
+        half: true,
+        maxLength: 200,
+        placeholder: "yourfirm.com",
+        hint: "Leave blank if you don't have one.",
+      },
+      {
+        name: "domainIdea",
+        label: "Domain you own or want",
+        type: "text",
+        half: true,
+        maxLength: 200,
+        placeholder: "riverawealth.com",
+      },
+      {
+        name: "domainStatus",
+        label: "Domain status",
+        type: "select",
+        required: true,
+        options: [
+          "I already own my domain",
+          "I own it, but I'm not sure how to access it",
+          "I need help registering one",
+          "Not sure",
+        ],
+      },
+      {
+        name: "sitePriority",
+        label: "What should your site do first?",
+        type: "radio",
+        required: true,
+        options: [
+          "Make me look credible when someone searches my name",
+          "Let people book time with me",
+          "Explain what I do and who I help",
+          "Collect enquiries from new prospects",
+          "Give clients one place to find everything",
+        ],
+      },
+      {
+        name: "assets",
+        label: "What do you already have ready?",
+        type: "multiselect",
+        options: [
+          "Logo files",
+          "Professional headshot",
+          "Written bio",
+          "Team photos",
+          "Client testimonials",
+          "Brand colors / style guide",
+          "Compliance-approved copy",
+          "None of these yet",
+        ],
+        hint: "Whatever's missing, we'll produce — just tell us where you stand.",
       },
     ],
   },
   {
     id: "services",
-    title: "Services",
-    blurb: "Tell us which services you'd like your team to take on.",
+    title: "Your package",
+    blurb: "Your website is the foundation. Tell us what to switch on around it.",
     fields: [
       {
         name: "services",
-        label: "Services you're interested in",
+        label: "Include in my package",
         type: "multiselect",
         required: true,
-        options: [
-          "Google My Business Profile Setup & Management",
-          "Search Engine Optimization",
-          "Google Knowledge Panel",
-          "Newsletter Marketing Services",
-          "Review Management System",
-          "Printing Services",
-          "Lead Generation",
-          "Appointment Booking",
-        ],
+        options: PACKAGE_SERVICES,
         hint: "Select at least one. Not sure? Pick what sounds closest — we'll sort out the details on your kickoff call.",
       },
       {
-        name: "currentMarketing",
-        label: "How is your marketing handled today?",
-        type: "radio",
-        required: true,
-        options: [
-          "Nothing consistent yet",
-          "I do it myself when I have time",
-          "A vendor or freelancer handles some of it",
-          "We have an in-house marketing person",
-          "My broker-dealer provides materials",
-        ],
+        name: "servicePriority",
+        label: "After the website, what should we set up first?",
+        type: "select",
+        options: [...PACKAGE_SERVICES, "Not sure — you decide the order"],
       },
     ],
   },
   {
     id: "goals",
-    title: "Your goals",
-    blurb: "Last step. This is what we'll build your onboarding plan around.",
+    title: "Getting started",
+    blurb: "Last step. This is what we'll build your launch plan around.",
     fields: [
       {
         name: "primaryGoal",
-        label: "Your #1 goal for the next 12 months",
+        label: "What matters most about being online?",
         type: "radio",
         required: true,
         options: [
-          "Bring in more qualified leads",
-          "Build a recognizable brand",
-          "Launch a new practice",
-          "Fill seminars & client events",
-          "Improve client experience & retention",
-          "Modernize an outdated brand",
-          "Earn more referrals",
+          "Looking credible when someone searches my name",
+          "Having one place to send prospects and clients",
+          "Letting people book time with me directly",
+          "Showing up in local search results",
+          "Replacing something that's out of date",
+          "Getting online for the first time",
         ],
       },
       {
-        name: "clientGoal",
-        label: "New clients you'd like to add per month",
-        type: "select",
-        half: true,
-        options: ["1–2", "3–5", "6–10", "10+", "Not sure yet"],
-      },
-      {
         name: "timeline",
-        label: "When would you like to start?",
+        label: "When would you like to be live?",
         type: "select",
         required: true,
         half: true,
-        options: ["Right away", "Within 30 days", "In 60–90 days", "Just exploring for now"],
+        options: ["As soon as possible", "Within 30 days", "In 60–90 days", "No fixed date yet"],
       },
       {
-        name: "budget",
-        label: "Monthly marketing budget",
+        name: "complianceReview",
+        label: "Does your firm require compliance review?",
         type: "select",
+        required: true,
         half: true,
-        options: ["Under $500", "$500–$1,000", "$1,000–$2,500", "$2,500–$5,000", "$5,000+", "Prefer to discuss"],
-        hint: "Optional — it just helps us scope realistically.",
+        options: ["Yes", "No", "Not sure"],
+        hint: "We'll build to whatever your BD or RIA needs.",
       },
       {
         name: "preferredContact",
         label: "Best way to reach you",
         type: "radio",
         required: true,
-        half: true,
         options: ["Email", "Text message", "Phone call"],
       },
       {
-        name: "challenge",
-        label: "What's the biggest thing getting in the way right now?",
+        name: "notes",
+        label: "Anything else we should know?",
         type: "textarea",
         maxLength: 1200,
-        placeholder: "Tell us in a sentence or two — the more specific, the better your blueprint.",
+        placeholder: "Sites you like, things you want to avoid, a launch date you're working towards…",
       },
       {
         name: "consent",

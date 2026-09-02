@@ -25,11 +25,13 @@ export function isConfigured(): boolean {
   return isApiConfigured() || isWebhookConfigured();
 }
 
-/** "Right away" -> "right-away", for use in tag names. */
+/** "I'm not online yet" -> "im-not-online-yet", for use in tag names. */
 function slugify(value: string): string {
   return value
     .toLowerCase()
     .replace(/&/g, "and")
+    // Drop apostrophes rather than letting them split a word into two chunks.
+    .replace(/['\u2019]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 60);
@@ -73,6 +75,10 @@ export function buildTags(answers: Answers): string[] {
   const contact = asText(answers.preferredContact);
   if (contact) tags.add(`prefers-${slugify(contact)}`);
 
+  // Where they stand online today — drives which build track they land in.
+  const site = asText(answers.currentSite);
+  if (site) tags.add(`site-${slugify(site)}`);
+
   for (const service of (answers.services as string[] | undefined) ?? []) {
     tags.add(`service-${slugify(service)}`);
   }
@@ -87,7 +93,7 @@ export function buildTags(answers: Answers): string[] {
 
 /** A readable transcript of every answer, attached to the contact as a note. */
 export function buildNote(answers: Answers, meta: Submission["meta"]): string {
-  const lines: string[] = ["Advisor Onboarding Questionnaire", ""];
+  const lines: string[] = ["Digital Presence Package — Onboarding Questionnaire", ""];
 
   for (const step of STEPS) {
     const rows = step.fields
@@ -171,7 +177,7 @@ async function upsertContact(answers: Answers, meta: Submission["meta"]): Promis
     website: asText(answers.website),
     city,
     state,
-    source: process.env.GHL_SOURCE ?? "Advisor Onboarding Page",
+    source: process.env.GHL_SOURCE ?? "Digital Presence Onboarding",
     tags: buildTags(answers),
   };
 

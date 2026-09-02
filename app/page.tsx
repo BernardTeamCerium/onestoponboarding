@@ -1,4 +1,5 @@
 import OnboardingForm from "@/components/OnboardingForm";
+import { STEPS } from "@/lib/questionnaire";
 import { site, NEXT_STEPS } from "@/lib/site";
 
 export default function Home() {
@@ -27,25 +28,24 @@ export default function Home() {
           <div className="wrap intro-inner">
             <span className="eyebrow">
               <span className="eyebrow-dot" aria-hidden="true" />
-              Client Onboarding
+              {site.packageName} · Onboarding
             </span>
             <h1>
-              Welcome aboard. Let&apos;s get your <em>marketing</em> moving.
+              Let&apos;s get you <em>online</em>.
             </h1>
             <p className="intro-lede">
-              A few quick questions about you, your practice and the services you&apos;d like us to
-              take on — so your account team has everything it needs to start building.
+              Your {site.packageName} starts with your website. Answer a few questions about you,
+              your practice and what you already have — then we build, review and launch.
             </p>
             <p className="intro-meta">
-              About {site.estimatedMinutes} minutes · 4 short steps · Here&apos;s what happens after
-              you submit:
+              {site.estimatedMinutes} min · {STEPS.length} steps · What happens next
             </p>
 
             <ol className="strip">
               {NEXT_STEPS.map((step, index) => (
                 <li className="strip-item" key={step.title}>
                   <span className="strip-num" aria-hidden="true">
-                    {index + 1}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="strip-when">{step.when}</span>
                   <span className="strip-title">{step.title}</span>

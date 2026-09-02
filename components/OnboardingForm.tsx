@@ -198,7 +198,9 @@ export default function OnboardingForm() {
         <div className="form-top">
           <div className="form-top-row">
             <h2>All done</h2>
-            <span className="step-count">Complete</span>
+            <span className="step-count">
+              <b>Complete</b>
+            </span>
           </div>
           <div className="progress">
             <div className="progress-bar" style={{ width: "100%" }} />
@@ -261,7 +263,8 @@ export default function OnboardingForm() {
         <div className="form-top-row">
           <h2>{step.title}</h2>
           <span className="step-count">
-            Step {stepIndex + 1} of {STEPS.length}
+            Step <b>{String(stepIndex + 1).padStart(2, "0")}</b> /{" "}
+            {String(STEPS.length).padStart(2, "0")}
           </span>
         </div>
         <div
@@ -451,11 +454,6 @@ function FieldRow({ field, value, error, onChange, onToggle }: FieldRowProps) {
   return (
     <div className={className}>
       <label htmlFor={field.name}>{labelNode}</label>
-      {field.hint ? (
-        <p className="hint" id={hintId}>
-          {field.hint}
-        </p>
-      ) : null}
 
       {field.type === "textarea" ? (
         <textarea
@@ -499,6 +497,12 @@ function FieldRow({ field, value, error, onChange, onToggle }: FieldRowProps) {
           onChange={(event) => onChange(field.name, event.target.value)}
         />
       )}
+
+      {field.hint ? (
+        <p className="hint" id={hintId}>
+          {field.hint}
+        </p>
+      ) : null}
 
       {error ? (
         <p className="error" id={errorId}>

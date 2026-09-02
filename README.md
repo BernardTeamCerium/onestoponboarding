@@ -1,12 +1,15 @@
-# Client Onboarding — One Stop Print & Digital Solutions
+# Digital Presence Package — Onboarding
 
-An onboarding questionnaire for advisors who are already clients. It captures
-personal and professional background, the services they'd like added and their
-goals, tells them exactly what happens next, and hands the whole submission to
-GoHighLevel so email and SMS follow-up fire automatically.
+The onboarding questionnaire for advisors starting on the Digital Presence
+Package. The package starts with the advisor's website, so the questionnaire
+does too: where they stand online today, their domain, what the site needs to
+do, and which assets they already have. It then covers the services that
+surround the site, tells them exactly what happens next, and hands the whole
+submission to GoHighLevel so email and SMS follow-up fire automatically.
 
-The page is the form: a compact header, the questionnaire, and a footer. There
-is no sales pitch — these advisors have already signed.
+The page is the form: a dark technical header, the questionnaire on light
+surfaces, and a footer. There is no sales pitch — these advisors have already
+signed.
 
 Built with Next.js (App Router) and TypeScript. No database — GoHighLevel is
 the system of record.
@@ -35,23 +38,29 @@ configuration is needed.
 
 ## What the advisor sees
 
-1. **Header** — a welcome line, the time cost (about 3 minutes), and a slim
-   strip of the four next steps so nothing after submitting is a surprise.
-2. **The questionnaire** — four short steps with a progress bar, starting in
-   the first screenful:
-   - *About you* — name, email, mobile, city/state, website.
+1. **Header** — "Let's get you online", the time cost, and a slim strip of the
+   four next steps so nothing after submitting is a surprise.
+2. **The questionnaire** — five short steps with a progress bar:
+   - *About you* — name, email, mobile, city/state, designations as they should
+     appear on the site.
    - *Your practice* — firm, role, years in the industry, team size,
-     broker-dealer/RIA affiliation, ideal client.
-   - *Services* — which services to take on, and how marketing is handled today.
-   - *Your goals* — primary goal, target new clients, timeline, budget,
-     preferred contact method, biggest obstacle, and email/SMS consent.
+     broker-dealer/RIA affiliation, who they serve.
+   - *Your website* — where they are online today, current address, the domain
+     they own or want, domain status, what the site should do first, and which
+     assets (logo, headshot, bio, testimonials, approved copy) they already have.
+   - *Your package* — which surrounding services to switch on, and what to set
+     up first after the site.
+   - *Getting started* — what matters most about being online, target launch
+     date, whether compliance review is required, preferred contact method,
+     notes, and email/SMS consent.
 3. **Thank-you screen** — the four next steps in full with timing, plus a
    booking button when `NEXT_PUBLIC_BOOKING_URL` is set.
 
-The services offered on step three are Google My Business Profile Setup &
+The services offered on step four are Google My Business Profile Setup &
 Management, Search Engine Optimization, Google Knowledge Panel, Newsletter
 Marketing Services, Review Management System, Printing Services, Lead
-Generation and Appointment Booking. Edit the list in `lib/questionnaire.ts`.
+Generation and Appointment Booking. Edit `PACKAGE_SERVICES` in
+`lib/questionnaire.ts`.
 
 Answers are validated in the browser *and* again on the server, so a step can't
 be skipped and the API can't be posted to with junk.
@@ -89,10 +98,11 @@ GoHighLevel can capture the payload shape, then map the fields into your email
 and SMS templates. Useful variables:
 
 `firstName`, `lastName`, `full_name`, `email`, `phone`, `firmName`, `role`,
-`yearsExperience`, `teamSize`, `affiliation`, `ideal_client_list`,
-`services_list`, `currentMarketing`, `primaryGoal`, `clientGoal`, `timeline`,
-`budget`, `preferredContact`, `challenge`, `contactId`, `submittedAt`,
-`utmSource`, `utmCampaign`.
+`yearsExperience`, `teamSize`, `affiliation`, `designations`,
+`ideal_client_list`, `currentSite`, `currentSiteUrl`, `domainIdea`,
+`domainStatus`, `sitePriority`, `assets`, `services_list`, `servicePriority`,
+`primaryGoal`, `timeline`, `complianceReview`, `preferredContact`, `notes`,
+`contactId`, `submittedAt`, `utmSource`, `utmCampaign`.
 
 ### 4. Build the messaging workflows
 
@@ -105,7 +115,8 @@ of parsing anything:
 | `financial-advisor` | Audience tag |
 | `role-*` | e.g. `role-ria-owner-principal` |
 | `timeline-*` | e.g. `timeline-right-away` — good for prioritising outreach |
-| `goal-*` | e.g. `goal-bring-in-more-qualified-leads` |
+| `goal-*` | e.g. `goal-getting-online-for-the-first-time` |
+| `site-*` | Where they stand online today, e.g. `site-im-not-online-yet` — routes the build track |
 | `prefers-*` | e.g. `prefers-text-message` — branch email vs. SMS on this |
 | `service-*` | One per selected service, e.g. `service-search-engine-optimization` |
 
@@ -117,8 +128,8 @@ A good starting set of workflows:
    attached to the contact.
 3. **Kickoff nudge** — wait 1 day, then if no kickoff call is booked, send a
    reminder with the calendar link.
-4. **Priority routing** — trigger on `timeline-right-away` and assign the
-   contact to an account manager immediately.
+4. **Priority routing** — trigger on `timeline-as-soon-as-possible` or
+   `site-im-not-online-yet` and assign the contact to a build team immediately.
 
 Branch on `prefers-text-message` / `prefers-email` / `prefers-phone-call` to
 respect the contact method the advisor chose.
@@ -139,7 +150,7 @@ Any questionnaire field name works as a key — see `lib/questionnaire.ts`.
 
 | What | Where |
 | --- | --- |
-| Brand colours | The six variables under `:root` in `app/globals.css` |
+| Brand colours | The tokens under `:root` in `app/globals.css` — `--orange`, `--black`, `--white`, `--page` |
 | Company details, phone, address, booking link | `lib/site.ts` |
 | The "what happens next" steps | `NEXT_STEPS` in `lib/site.ts` |
 | Questions, options, required fields | `lib/questionnaire.ts` |
@@ -149,10 +160,15 @@ Any questionnaire field name works as a key — see `lib/questionnaire.ts`.
 adds it to the form, the validation, the note and the webhook payload
 automatically. Give new fields a `name` you're happy to see in GoHighLevel.
 
-> **Note on colours:** `onestopprintco.com` couldn't be reached from the build
-> environment to sample its exact palette, so the navy/orange/cream scheme here
-> is a considered stand-in. Drop the real hex values into the `:root` block in
-> `app/globals.css` and the whole page follows.
+The look is set by the tokens at the top of `app/globals.css`: monospace
+micro-labels (`--font-mono`), hairline borders, small radii, and a faint grid
+with an orange glow behind the header.
+
+> **Note on colours:** the palette is orange, white and black — a dark
+> technical header and footer with the form on light surfaces. The exact orange
+> is `--orange: #ff6b00`; adjust it and the accents follow. `onestopprintco.com`
+> couldn't be reached from the build environment, so if the site's orange has a
+> specific value, set it there.
 
 ## Compliance and anti-spam
 
@@ -170,7 +186,7 @@ automatically. Give new fields a `name` you're happy to see in GoHighLevel.
 
 ```
 app/
-  layout.tsx              fonts, metadata
+  layout.tsx              fonts (Inter + JetBrains Mono), metadata
   page.tsx                header, intro, next-steps strip, footer
   globals.css             brand tokens and all styling
   api/onboarding/route.ts validation, honeypot, rate limit, delivery

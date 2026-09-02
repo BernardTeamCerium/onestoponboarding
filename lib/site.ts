@@ -7,16 +7,19 @@
 export const site = {
   company: "One Stop Print & Digital Solutions",
   shortName: "One Stop",
-  tagline: "Your #1 Marketing Partner for Growth",
+  tagline: "Print & digital solutions for financial advisors.",
   phone: "(305) 495-9490",
   phoneHref: "tel:+13054959490",
   email: "Info@onestopprintco.com",
   address: "25 SE 2nd Ave, Ste 550, Miami, FL 33131",
   website: "https://onestopprintco.com",
+  /** The package this questionnaire onboards advisors onto. */
+  packageName: "Digital Presence Package",
+
   /** Optional GoHighLevel / Calendly booking link shown on the thank-you screen. */
   bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL ?? "",
   /** Roughly how long the questionnaire takes, shown up front. */
-  estimatedMinutes: 3,
+  estimatedMinutes: 4,
 } as const;
 
 export interface NextStep {
@@ -38,20 +41,20 @@ export const NEXT_STEPS: NextStep[] = [
   },
   {
     when: "1 business day",
-    title: "Your account manager reaches out",
+    title: "Your build team reaches out",
     description:
-      "We'll book your kickoff call and send a short list of what we need from you — brand assets, logins and any compliance contacts.",
+      "We book your kickoff call and send a short checklist — domain access, logo files, headshot and bio — so nothing stalls the build.",
   },
   {
     when: "3–5 business days",
-    title: "Your onboarding plan",
+    title: "Your site map and build plan",
     description:
-      "A written plan covering what we're building, in what order, with dates — including anything that needs your broker-dealer or RIA review.",
+      "The pages we'll build, in what order, with dates — plus anything that needs to go through your broker-dealer or RIA first.",
   },
   {
     when: "On your approval",
-    title: "Production starts",
+    title: "We build, review and launch",
     description:
-      "Design, revisions and your compliance review, then everything goes to print and launch. One team, one point of contact.",
+      "Design, revisions and your compliance review. Your site goes live, then the rest of your package connects to it.",
   },
 ];
