@@ -2,20 +2,51 @@ import OnboardingForm from "@/components/OnboardingForm";
 import { STEPS } from "@/lib/questionnaire";
 import { site, NEXT_STEPS } from "@/lib/site";
 
+/** Wordmark: "One" in ink, "Stop" in orange, with the two-line lockup beneath. */
+function Logo() {
+  return (
+    <a className="logo" href={site.website}>
+      <span className="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 44 44" role="presentation" focusable="false">
+          <circle
+            cx="23"
+            cy="22"
+            r="13"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="5.5"
+            strokeLinecap="round"
+            strokeDasharray="62 30"
+            transform="rotate(-125 23 22)"
+          />
+          <circle cx="8" cy="14" r="2.6" fill="currentColor" />
+          <circle cx="3" cy="22" r="1.8" fill="currentColor" opacity="0.6" />
+          <circle cx="9" cy="30" r="1.4" fill="currentColor" opacity="0.35" />
+        </svg>
+      </span>
+      <span className="logo-text">
+        <span className="logo-word">
+          One<span className="logo-accent">Stop</span>
+        </span>
+        <span className="logo-sub">{site.logoSub}</span>
+      </span>
+    </a>
+  );
+}
+
 export default function Home() {
   return (
     <>
+      <div className="topbar">
+        <div className="wrap topbar-inner">
+          <span className="topbar-dot" aria-hidden="true" />
+          {site.packageName} · Onboarding
+        </div>
+      </div>
+
       <header className="header">
         <div className="wrap header-inner">
-          <a className="logo" href={site.website}>
-            <span className="logo-mark" aria-hidden="true">
-              1S
-            </span>
-            <span className="logo-text">
-              <span className="logo-name">{site.shortName}</span>
-              <span className="logo-sub">Print &amp; Digital Solutions</span>
-            </span>
-          </a>
+          <Logo />
           <div className="header-contact">
             <a href={site.phoneHref}>{site.phone}</a>
             <a href={`mailto:${site.email}`}>{site.email}</a>
@@ -24,20 +55,20 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="intro">
-          <div className="wrap intro-inner">
-            <span className="eyebrow">
-              <span className="eyebrow-dot" aria-hidden="true" />
-              {site.packageName} · Onboarding
-            </span>
+        <section className="hero">
+          <div className="wrap hero-inner">
             <h1>
-              Let&apos;s get you <em>online</em>.
+              Let&apos;s Get You <span className="accent">Online.</span>
             </h1>
-            <p className="intro-lede">
-              Your {site.packageName} starts with your website. Answer a few questions about you,
-              your practice and what you already have — then we build, review and launch.
+            <p className="hero-lede">
+              <strong>Your website comes first.</strong> Everything else in your{" "}
+              {site.packageName} connects to it — so we start by getting you a site that works.
             </p>
-            <p className="intro-meta">
+            <p className="hero-sub">
+              A few questions about you, your practice and what you already have. Then we build,
+              review and launch.
+            </p>
+            <p className="hero-meta">
               {site.estimatedMinutes} min · {STEPS.length} steps · What happens next
             </p>
 
@@ -66,16 +97,10 @@ export default function Home() {
         <div className="wrap">
           <div className="footer-grid">
             <div>
-              <div className="logo" style={{ marginBottom: 14 }}>
-                <span className="logo-mark" aria-hidden="true">
-                  1S
-                </span>
-                <span className="logo-text">
-                  <span className="logo-name">{site.shortName}</span>
-                  <span className="logo-sub">Print &amp; Digital Solutions</span>
-                </span>
+              <div className="footer-logo">
+                <Logo />
               </div>
-              <p style={{ margin: 0, maxWidth: "28em" }}>{site.tagline}</p>
+              <p style={{ margin: 0, maxWidth: "30em" }}>{site.tagline}</p>
             </div>
             <address className="footer-contact">
               <a href={site.phoneHref}>{site.phone}</a>

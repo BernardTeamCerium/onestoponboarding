@@ -7,9 +7,10 @@ do, and which assets they already have. It then covers the services that
 surround the site, tells them exactly what happens next, and hands the whole
 submission to GoHighLevel so email and SMS follow-up fire automatically.
 
-The page is the form: a dark technical header, the questionnaire on light
-surfaces, and a footer. There is no sales pitch — these advisors have already
-signed.
+The page is the form, styled to match onestopprintco.com: the black utility
+bar, the OneStop wordmark on white, a light hero with a faint grid and warm
+wash, headlines ending in an orange word, and pill buttons with the orange
+gradient. There is no sales pitch — these advisors have already signed.
 
 Built with Next.js (App Router) and TypeScript. No database — GoHighLevel is
 the system of record.
@@ -150,8 +151,8 @@ Any questionnaire field name works as a key — see `lib/questionnaire.ts`.
 
 | What | Where |
 | --- | --- |
-| Brand colours | The tokens under `:root` in `app/globals.css` — `--orange`, `--black`, `--white`, `--page` |
-| Company details, phone, address, booking link | `lib/site.ts` |
+| Brand colours | The tokens under `:root` in `app/globals.css` — `--orange`, the gradient pair, `--black`, `--ink`, `--page` |
+| Company name, wordmark lockup, phone, address, booking link | `lib/site.ts` |
 | The "what happens next" steps | `NEXT_STEPS` in `lib/site.ts` |
 | Questions, options, required fields | `lib/questionnaire.ts` |
 | Welcome headline and intro copy | `app/page.tsx` |
@@ -161,14 +162,16 @@ adds it to the form, the validation, the note and the webhook payload
 automatically. Give new fields a `name` you're happy to see in GoHighLevel.
 
 The look is set by the tokens at the top of `app/globals.css`: monospace
-micro-labels (`--font-mono`), hairline borders, small radii, and a faint grid
-with an orange glow behind the header.
+micro-labels (`--font-mono`), hairline borders, pill buttons, and a faint grid
+behind the hero. The wordmark is drawn in `app/page.tsx` as type plus a small
+inline SVG mark, so there is no logo file to manage — swap in the real asset
+there if you'd rather use it.
 
-> **Note on colours:** the palette is orange, white and black — a dark
-> technical header and footer with the form on light surfaces. The exact orange
-> is `--orange: #ff6b00`; adjust it and the accents follow. `onestopprintco.com`
-> couldn't be reached from the build environment, so if the site's orange has a
-> specific value, set it there.
+> **Note on colours:** the palette is sampled from the live site — orange
+> (`--orange: #f26522`, gradient `#f97b2c` → `#ec4a1c`) on white, with a black
+> utility bar and footer (`--black: #080b12`) and ink `#101828`. The form card
+> keeps a black header band so the questionnaire itself still reads as a
+> distinct panel. Adjust the tokens and everything follows.
 
 ## Compliance and anti-spam
 
@@ -186,8 +189,8 @@ with an orange glow behind the header.
 
 ```
 app/
-  layout.tsx              fonts (Inter + JetBrains Mono), metadata
-  page.tsx                header, intro, next-steps strip, footer
+  layout.tsx              fonts (Plus Jakarta Sans + JetBrains Mono), metadata
+  page.tsx                utility bar, wordmark header, hero, next-steps strip, footer
   globals.css             brand tokens and all styling
   api/onboarding/route.ts validation, honeypot, rate limit, delivery
 components/

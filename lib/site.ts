@@ -5,9 +5,12 @@
  * six values under `:root` to re-skin the whole page.
  */
 export const site = {
-  company: "One Stop Print & Digital Solutions",
-  shortName: "One Stop",
-  tagline: "Print & digital solutions for financial advisors.",
+  company: "One Stop Print & Digital Marketing Solutions",
+  shortName: "OneStop",
+
+  /** The two-line lockup under the wordmark. */
+  logoSub: "Print & Digital Marketing Solutions",
+  tagline: "The advisor growth platform — built exclusively for financial professionals.",
   phone: "(305) 495-9490",
   phoneHref: "tel:+13054959490",
   email: "Info@onestopprintco.com",
