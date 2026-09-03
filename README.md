@@ -4,8 +4,13 @@ The onboarding questionnaire for advisors starting on the Digital Presence
 Package. The package starts with the advisor's website, so the questionnaire
 does too: where they stand online today, their domain, what the site needs to
 do, and which assets they already have. It then covers the services that
-surround the site, tells them exactly what happens next, and hands the whole
-submission to GoHighLevel so email and SMS follow-up fire automatically.
+surround the site and tells them exactly what happens next.
+
+**It runs standalone.** Submissions are stored in your own Postgres database
+and listed in a password-protected dashboard at `/admin`, with CSV export, and
+optionally emailed to your team as they arrive. GoHighLevel is supported but
+entirely optional — set two environment variables whenever you want it, with
+no code change.
 
 The page follows onestopprintco.com's composition: the two-segment black
 utility bar, the OneStop wordmark on white with an orange CTA pill, and a
@@ -21,7 +26,7 @@ the system of record.
 
 ```bash
 npm install
-cp .env.example .env.local   # fill in your GoHighLevel values
+cp .env.example .env.local   # set DATABASE_URL and ADMIN_PASSWORD at minimum
 npm run dev                  # http://localhost:3000
 ```
 
@@ -35,9 +40,10 @@ Deploying to Vercel: import the repo, add the environment variables from
 `.env.example` under **Settings → Environment Variables**, and deploy. No other
 configuration is needed.
 
-> **Dry-run mode:** with no GoHighLevel variables set, the form works end to end
-> and the submission is logged to the server console instead of being sent.
-> Useful for demos — but set the variables before you send real traffic here.
+> **Dry-run mode:** with no destination configured at all, the form still works
+> end to end and the submission is logged to the server console. Useful for
+> demos — but set `DATABASE_URL` before you send real traffic here, or answers
+> will only exist in your logs.
 
 ## What the advisor sees
 
@@ -68,32 +74,61 @@ Generation and Appointment Booking. Edit `PACKAGE_SERVICES` in
 Answers are validated in the browser *and* again on the server, so a step can't
 be skipped and the API can't be posted to with junk.
 
-## GoHighLevel setup
+## Where submissions go
 
-The server route `POST /api/onboarding` never runs in the browser, so your token
-stays private. It delivers a submission by up to three routes:
+`POST /api/onboarding` runs server-side only, so credentials never reach the
+browser. It fans each submission out to every configured destination:
 
-| Route | What it does | Needs |
+| Destination | What it does | Needs |
 | --- | --- | --- |
-| Contact upsert | Creates/updates the contact with name, email, phone (E.164), firm, city/state, source and tags | `GHL_API_TOKEN`, `GHL_LOCATION_ID` |
-| Contact note | Attaches the full questionnaire transcript to the contact | same as above |
-| Inbound webhook | Posts every answer as workflow variables | `GHL_INBOUND_WEBHOOK_URL` |
+| Database | Stores the full submission; powers `/admin` and CSV export | `DATABASE_URL` |
+| Team email | Emails the formatted answers to your inbox | `RESEND_API_KEY`, `NOTIFY_EMAIL_FROM` |
+| GoHighLevel | Upserts the contact, attaches the transcript as a note, posts to a workflow webhook | `GHL_API_TOKEN`, `GHL_LOCATION_ID` |
 
-The contact upsert is the critical path; if the note or webhook fails, the lead
-is still captured and the problem is logged as a warning.
+Each is independent and best-effort: one failing never blocks the others, and
+the submission counts as captured if **any** succeeded. If they all fail, the
+advisor sees an error and the full answers are written to the server log so
+nothing is lost.
 
-### 1. Create a Private Integration token
+## The dashboard
+
+Set `ADMIN_PASSWORD` and visit `/admin`:
+
+- Every submission, newest first — advisor, firm, contact details, where they
+  are online today, target timeline and how many services they picked.
+- Click any row for the full transcript, grouped by questionnaire step, with
+  one-click email and call buttons.
+- **Export CSV** gives you every submission with a column per question.
+
+Sign-in sets an httpOnly cookie signed with `ADMIN_PASSWORD`, valid for seven
+days; changing the password signs everyone out. Login attempts are throttled.
+The page is `noindex` and never rendered statically.
+
+## Database
+
+Any Postgres works — [Neon](https://neon.tech), [Supabase](https://supabase.com)
+and Vercel Postgres all have free tiers well above this volume. Copy the
+connection string into `DATABASE_URL`; the table is created automatically on
+first submission, so there is no migration step.
+
+## GoHighLevel (optional)
+
+Skip this section entirely if you're running standalone. To turn it on later,
+set the variables below and redeploy — submissions then go to your CRM *in
+addition to* the database and email.
+
+### Create a Private Integration token
 
 **Settings → Private Integrations → Create**, with scopes
 `contacts.readonly`, `contacts.write` and `objects/record.write` (for notes).
 Copy the token into `GHL_API_TOKEN`.
 
-### 2. Find your Location ID
+### Find your Location ID
 
 **Settings → Business Profile → Location ID** (sometimes called Sub-Account ID).
 Copy it into `GHL_LOCATION_ID`.
 
-### 3. Add the inbound webhook (recommended)
+### Add the inbound webhook (recommended)
 
 **Automation → Workflows → Create → trigger "Inbound Webhook"**. Copy the
 webhook URL into `GHL_INBOUND_WEBHOOK_URL`. Submit the form once so
@@ -107,7 +142,7 @@ and SMS templates. Useful variables:
 `primaryGoal`, `timeline`, `complianceReview`, `preferredContact`, `notes`,
 `contactId`, `submittedAt`, `utmSource`, `utmCampaign`.
 
-### 4. Build the messaging workflows
+### Build the messaging workflows
 
 Every submission is tagged, so workflows can trigger on **Contact Tag** instead
 of parsing anything:
@@ -137,7 +172,7 @@ A good starting set of workflows:
 Branch on `prefers-text-message` / `prefers-email` / `prefers-phone-call` to
 respect the contact method the advisor chose.
 
-### 5. Custom fields (optional)
+### Custom fields (optional)
 
 The full transcript always lands as a note on the contact, so this step is
 optional. To also file specific answers into GoHighLevel custom fields, create
@@ -192,14 +227,22 @@ there if you'd rather use it.
 ```
 app/
   layout.tsx              fonts (Plus Jakarta Sans + JetBrains Mono), metadata
-  page.tsx                utility bar, wordmark header, hero, next-steps strip, footer
+  page.tsx                utility bar, wordmark header, hero, panel, footer
   globals.css             brand tokens and all styling
   api/onboarding/route.ts validation, honeypot, rate limit, delivery
+  api/admin/*             login, logout, CSV export
+  admin/page.tsx          submissions dashboard
+  admin/[id]/page.tsx     one submission in full
 components/
   OnboardingForm.tsx      multi-step form and thank-you screen
+  AdminLogin.tsx          dashboard sign-in
 lib/
   questionnaire.ts        the questions (single source of truth)
   validation.ts           zod schema shared by client and server
+  delivery.ts             fans a submission out to every destination
+  db.ts                   Postgres storage and queries
+  notify.ts               team notification email
+  adminAuth.ts            signed dashboard session
   gohighlevel.ts          contact upsert, note, webhook, tag building
   site.ts                 company details and next-steps copy
 ```

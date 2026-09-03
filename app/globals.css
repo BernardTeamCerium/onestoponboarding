@@ -843,6 +843,16 @@ fieldset.field .error {
   font-size: 16px;
 }
 
+.thanks > p strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.thanks-sub {
+  color: var(--muted);
+  font-size: 14.5px;
+}
+
 .thanks-list {
   list-style: none;
   margin: 30px 0 0;
@@ -1027,5 +1037,297 @@ fieldset.field .error {
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   Admin dashboard
+   ========================================================================== */
+.admin {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px var(--gutter) 80px;
+}
+
+.admin-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.admin-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+
+.admin-top h1 {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  margin: 0;
+}
+
+.admin-sub {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-actions form {
+  margin: 0;
+}
+
+.admin-back {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.admin-back a {
+  text-decoration: none;
+  color: var(--muted);
+}
+
+.admin-back a:hover {
+  color: var(--orange-ink);
+}
+
+.admin-count {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+.admin-count strong {
+  color: var(--ink);
+}
+
+.admin-notice {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+}
+
+.admin-notice h1,
+.admin-notice h2 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.admin-notice p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.admin-notice code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--page);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--ink);
+}
+
+/* Table */
+.admin-table-wrap {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--body);
+  vertical-align: top;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.admin-table tr:hover td {
+  background: #fbfaf9;
+}
+
+/* Keep advisor names on one line; the column sizes to fit. */
+.admin-table td:nth-child(2) {
+  white-space: nowrap;
+}
+
+.admin-link {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.admin-link:hover {
+  color: var(--orange-ink);
+  text-decoration: underline;
+}
+
+.admin-stack {
+  display: grid;
+  gap: 2px;
+}
+
+.admin-stack a {
+  color: var(--body);
+  text-decoration: none;
+}
+
+.admin-stack a:hover {
+  color: var(--orange-ink);
+}
+
+.admin-chip {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--orange-soft);
+  border: 1px solid rgba(242, 101, 34, 0.3);
+  color: var(--orange-ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.mono-cell {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Detail view */
+.admin-section {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 14px;
+}
+
+.admin-section h2 {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.admin-dl {
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+.admin-dl-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 34%) 1fr;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-dl-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.admin-dl dt {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.admin-dl dd {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 14.5px;
+}
+
+/* Login */
+.login {
+  max-width: 380px;
+  margin: 60px auto;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+
+.login h1 {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+
+.login-sub {
+  color: var(--muted);
+  font-size: 14.5px;
+  margin-bottom: 22px;
+}
+
+.login .field {
+  margin-bottom: 20px;
+}
+
+.login .btn {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .admin {
+    padding: 28px var(--gutter) 60px;
+  }
+
+  .admin-dl-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
   }
 }

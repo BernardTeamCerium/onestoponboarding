@@ -37,10 +37,10 @@ export interface NextStep {
  */
 export const NEXT_STEPS: NextStep[] = [
   {
-    when: "Within minutes",
-    title: "Confirmation lands in your inbox",
+    when: "Done",
+    title: "We have your answers",
     description:
-      "You'll get an email and a text confirming we have your answers, with a copy of what you told us for your records.",
+      "Your responses are in and with your build team. Nothing else is needed from you right now.",
   },
   {
     when: "1 business day",

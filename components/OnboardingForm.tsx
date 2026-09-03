@@ -212,9 +212,10 @@ export default function OnboardingForm() {
           </div>
           <h2>{firstName ? `Thanks, ${firstName} — you're all set.` : "Thanks — you're all set."}</h2>
           <p>
-            Your answers are in and your file is already with your account team. Here&apos;s
-            exactly what happens next.
+            <strong>We&apos;ve received your response and will follow up with you.</strong> Your
+            answers are with your build team — nothing else is needed from you right now.
           </p>
+          <p className="thanks-sub">Here&apos;s what happens from here.</p>
 
           <ol className="thanks-list">
             {NEXT_STEPS.map((nextStep, index) => (
