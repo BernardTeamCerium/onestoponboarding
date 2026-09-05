@@ -12,6 +12,11 @@ optionally emailed to your team as they arrive. GoHighLevel is supported but
 entirely optional — set two environment variables whenever you want it, with
 no code change.
 
+**It shares its database with the One Stop platform.** The platform reads a
+stable `onboarding_submissions_v1` view, and submissions carry an
+`external_ref` from the `?ref=` link so they attach to the right record. See
+[Integrating with the One Stop platform](#integrating-with-the-one-stop-platform).
+
 The page follows onestopprintco.com's composition: the two-segment black
 utility bar, the OneStop wordmark on white with an orange CTA pill, and a
 left-aligned hero whose headline ends in an orange word, set beside a dark
@@ -183,6 +188,88 @@ GHL_CUSTOM_FIELDS={"firmName":"AbC123","services":"DeF456","primaryGoal":"GhI789
 ```
 
 Any questionnaire field name works as a key — see `lib/questionnaire.ts`.
+
+## Integrating with the One Stop platform
+
+The platform shares this database and reads submissions directly. Two things
+make that safe to rely on.
+
+### Read the view, not the table
+
+```sql
+select * from onboarding_submissions_v1 order by created_at desc;
+```
+
+`onboarding_submissions_v1` is the contract. It flattens the questionnaire into
+typed columns so the platform never parses JSON, and it is **versioned**: this
+app may add questions, rename fields or reshape the underlying table freely,
+but it will not change this view's existing columns. A breaking change ships as
+`onboarding_submissions_v2` alongside, giving you time to migrate.
+
+Querying the `submissions` table directly works, but its shape follows the
+questionnaire and will change without warning.
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `id` | text | UUID, stable |
+| `created_at` | timestamptz | |
+| `external_ref` | text | Your platform's identifier — see below. Null when the advisor arrived without one |
+| `first_name`, `last_name`, `email`, `phone` | text | Phone as typed; E.164 only goes to the CRM |
+| `city_state`, `designations` | text | |
+| `firm_name`, `role`, `years_experience`, `team_size`, `affiliation` | text | |
+| `ideal_client` | text[] | |
+| `current_site`, `current_site_url`, `domain_idea`, `domain_status`, `site_priority` | text | |
+| `assets_ready` | text[] | Logo, headshot, bio and so on |
+| `services` | text[] | Selected package services |
+| `service_priority`, `primary_goal`, `timeline`, `compliance_review`, `preferred_contact` | text | |
+| `notes` | text | Free text |
+| `consent` | boolean | Express email/SMS consent |
+| `raw_answers`, `raw_meta` | jsonb | Everything, including any question added after this view |
+| `ghl_delivered`, `ghl_contact_id` | boolean, text | Whether it also reached GoHighLevel |
+
+Text columns carry the answer labels exactly as the advisor saw them (for
+example `"I'm not online yet"`), so match on the full string rather than a
+prefix.
+
+### Linking a submission to a platform record
+
+Send advisors a link carrying their identifier:
+
+```
+https://onboarding.onestopprintco.com/?ref=ADVISOR_ID
+```
+
+The form captures `ref` (or `external_ref`) from the query string, carries it
+through every step, and stores it in `external_ref`. It also reaches the
+GoHighLevel webhook as `externalRef`, and appears in the dashboard and CSV
+export. Anything URL-safe up to 200 characters works — an account id, a UUID, a
+signed token your platform decodes.
+
+An advisor who lands without a `ref` still submits normally; `external_ref` is
+just null, and you match on email instead.
+
+### A read-only role for the platform
+
+Give the platform its own credentials rather than reusing this app's:
+
+```sql
+create role onestop_platform login password 'choose-a-strong-one';
+grant connect on database your_db to onestop_platform;
+grant usage on schema public to onestop_platform;
+grant select on onboarding_submissions_v1 to onestop_platform;
+```
+
+That grants the view only — no write access, and no access to the underlying
+table. This app creates its table, index and view automatically on first
+submission, so it needs a role that can run DDL; the platform does not.
+
+### Schema changes
+
+The app runs `create table if not exists`, `add column if not exists` and
+`create or replace view` on startup, so deploys are idempotent and there is no
+migration step. If the view can't be created — usually a permissions problem —
+it logs a warning and carries on storing submissions; it never fails a
+submission over the view.
 
 ## Customising
 

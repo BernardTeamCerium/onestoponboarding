@@ -51,6 +51,12 @@ export default async function SubmissionPage({ params }: { params: Promise<{ id:
         </div>
       </header>
 
+      {row.external_ref ? (
+        <p className="admin-count">
+          Platform reference · <strong>{row.external_ref}</strong>
+        </p>
+      ) : null}
+
       {row.ghl_delivered ? (
         <p className="admin-count">
           Sent to GoHighLevel{row.ghl_contact_id ? ` · contact ${row.ghl_contact_id}` : ""}

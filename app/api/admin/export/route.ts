@@ -29,13 +29,14 @@ export async function GET() {
   }
 
   const rows = await listSubmissions(5000);
-  const header = ["Submitted", ...ALL_FIELDS.map((field) => field.label)];
+  const header = ["Submitted", "Platform reference", ...ALL_FIELDS.map((field) => field.label)];
 
   const lines = [
     header.map(cell).join(","),
     ...rows.map((row) =>
       [
         cell(row.created_at.toISOString()),
+        cell(row.external_ref),
         ...ALL_FIELDS.map((field) => cell(row.answers[field.name])),
       ].join(","),
     ),

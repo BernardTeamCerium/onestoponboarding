@@ -62,6 +62,8 @@ export const submissionSchema = z.object({
     .object({
       pageUrl: z.string().max(500).optional(),
       referrer: z.string().max(500).optional(),
+      /** Identifier from the One Stop platform, passed as ?ref= on the link. */
+      ref: z.string().max(200).optional(),
       utmSource: z.string().max(200).optional(),
       utmMedium: z.string().max(200).optional(),
       utmCampaign: z.string().max(200).optional(),

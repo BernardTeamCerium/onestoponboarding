@@ -37,6 +37,11 @@ function readMeta(): Meta {
     const value = params.get(param);
     if (value) meta[key] = value.slice(0, 200);
   }
+
+  // Identifier from the One Stop platform, e.g. /?ref=ADVISOR_ID
+  const ref = params.get("ref") ?? params.get("external_ref");
+  if (ref) meta.ref = ref.slice(0, 200);
+
   return meta;
 }
 

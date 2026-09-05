@@ -226,6 +226,7 @@ async function postWebhook(answers: Answers, meta: Submission["meta"], contactId
       ideal_client_list: asText(answers.idealClient),
       tags: buildTags(answers),
       contactId,
+      externalRef: meta?.ref ?? "",
       submittedAt: new Date().toISOString(),
       ...meta,
     }),

@@ -15,6 +15,7 @@ export interface SubmissionRow {
   email: string;
   phone: string;
   firm_name: string;
+  external_ref: string | null;
   current_site: string;
   timeline: string;
   services: string[];
@@ -79,6 +80,13 @@ function ensureSchema(): Promise<void> {
         create index if not exists submissions_created_at_idx
           on submissions (created_at desc)
       `;
+      // Added after the first release; existing deployments pick it up here.
+      await db`alter table submissions add column if not exists external_ref text`;
+      await db`
+        create index if not exists submissions_external_ref_idx
+          on submissions (external_ref)
+      `;
+      await createPlatformView(db);
     })().catch((error) => {
       // Let the next call retry rather than caching a failure forever.
       schemaReady = null;
@@ -86,6 +94,66 @@ function ensureSchema(): Promise<void> {
     });
   }
   return schemaReady;
+}
+
+/**
+ * A stable, versioned read contract for the One Stop platform, which shares
+ * this database. The platform selects from this view rather than the table, so
+ * the questionnaire can change shape without breaking it — a breaking change
+ * means publishing a v2 view alongside, never editing this one in place.
+ */
+async function createPlatformView(db: Sql): Promise<void> {
+  const array = (key: string) =>
+    db.unsafe(
+      `array(select jsonb_array_elements_text(coalesce(answers->'${key}', '[]'::jsonb)))`,
+    );
+
+  try {
+    await db`
+      create or replace view onboarding_submissions_v1 as
+      select
+        id,
+        created_at,
+        external_ref,
+        first_name,
+        last_name,
+        email,
+        phone,
+        answers->>'cityState'         as city_state,
+        answers->>'designations'      as designations,
+        firm_name,
+        answers->>'role'              as role,
+        answers->>'yearsExperience'   as years_experience,
+        answers->>'teamSize'          as team_size,
+        answers->>'affiliation'       as affiliation,
+        ${array("idealClient")}       as ideal_client,
+        current_site,
+        answers->>'currentSiteUrl'    as current_site_url,
+        answers->>'domainIdea'        as domain_idea,
+        answers->>'domainStatus'      as domain_status,
+        answers->>'sitePriority'      as site_priority,
+        ${array("assets")}            as assets_ready,
+        services,
+        answers->>'servicePriority'   as service_priority,
+        answers->>'primaryGoal'       as primary_goal,
+        timeline,
+        answers->>'complianceReview'  as compliance_review,
+        answers->>'preferredContact'  as preferred_contact,
+        answers->>'notes'             as notes,
+        (answers->>'consent')::boolean as consent,
+        answers                       as raw_answers,
+        meta                          as raw_meta,
+        ghl_delivered,
+        ghl_contact_id
+      from submissions
+    `;
+  } catch (error) {
+    // Never let the view stop a submission being stored; the table is what matters.
+    console.warn(
+      "[db] could not create onboarding_submissions_v1:",
+      error instanceof Error ? error.message : error,
+    );
+  }
 }
 
 function text(value: unknown): string {
@@ -109,6 +177,7 @@ export async function saveSubmission(
       email: text(answers.email),
       phone: text(answers.phone),
       firm_name: text(answers.firmName),
+      external_ref: meta?.ref ? meta.ref : null,
       current_site: text(answers.currentSite),
       timeline: text(answers.timeline),
       services: (answers.services as string[] | undefined) ?? [],

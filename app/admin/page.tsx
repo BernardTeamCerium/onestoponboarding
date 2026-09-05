@@ -97,6 +97,7 @@ export default async function AdminPage() {
               <tr>
                 <th>Submitted</th>
                 <th>Advisor</th>
+                <th>Ref</th>
                 <th>Firm</th>
                 <th>Contact</th>
                 <th>Online today</th>
@@ -113,6 +114,7 @@ export default async function AdminPage() {
                       {`${row.first_name} ${row.last_name}`.trim() || "—"}
                     </Link>
                   </td>
+                  <td className="mono-cell">{row.external_ref || "—"}</td>
                   <td>{row.firm_name || "—"}</td>
                   <td>
                     <span className="admin-stack">
